@@ -1,0 +1,64 @@
+<!--要求：对栈中的元素进行排序，从上到下按照从大到小排列。只能建两个栈，可以有多个变量。-->
+<!--思路: 原栈stack中存数据， temp中先压入stack的顶端元素active，和temp栈顶元素进行比较，若小于等于，则压入。
+    否则把temp所有小于active的元素放至stack，再压入active =》 temp会从上到下 形成从小到大排列 再逐一压入stack即可。-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <input id="input"/>
+    <button class="button">push</button>
+    <button class="button">排序(从小到大)</button>
+
+    <div id="result"></div>
+    <div id="afterSortResult"></div>
+</div>
+<script type="text/javascript">
+    var stack = [];
+    var temp = [];
+    var push = document.getElementsByClassName('button')[0];
+    var sort = document.getElementsByClassName('button')[1];
+    var result = document.getElementById('result');
+    var afterSort = document.getElementById('afterSortResult');
+    // 输入原始数据
+    push.addEventListener('click', function() {
+        var inputValue = document.getElementById('input').value;
+        stack.push(inputValue);
+        result.innerHTML = stack;
+    });
+    // 排序
+    sort.addEventListener('click', function() {
+        if (stack.length === 0) {
+            return;
+        }
+        var maxLength = stack.length;
+        while(temp.length < maxLength && stack.length > 0) {
+            var active = stack[stack.length - 1];
+            // temp按照从上到下从小到大排列
+            // 如果temp为空 || temp最上层的值大于等于将要push的值 直接push
+            if (temp.length !== 0 && Number(temp[temp.length - 1]) < Number(active) ) {
+                stack.pop();
+                // 进stack 直到 temp最上层的值大于等于将要push的值
+                while(Number(temp[temp.length - 1]) < Number(active)) {
+                    var tempLast = temp[temp.length - 1];
+                    temp.pop();
+                    stack.push(tempLast);
+                }
+                temp.push(active);
+            } else {
+                stack.pop();
+                temp.push(active);
+            }
+        }
+        stack = [];
+        for(var i = temp.length - 1; i >= -1; i--) {
+            stack.push(temp[i]);
+        }
+        afterSort.innerHTML = `排序后的为：${stack}`;
+    });
+</script>
+</body>
+</html>
