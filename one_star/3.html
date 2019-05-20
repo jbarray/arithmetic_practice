@@ -1,0 +1,36 @@
+<!--要求：获取两个链表中的相同内容-->
+<!--思路: 将两个链表进行遍历， 相同的内容会压入一个数组中。-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+<div>
+    <div id="first"></div>
+    <div id="second"></div>
+    <div id="common"></div>
+</div>
+<script type="text/javascript">
+    var first = document.getElementById('first');
+    var second = document.getElementById('second');
+    var common = document.getElementById('common');
+    var commonArr = [];
+    first = [{value: 2, next: 4}, {value: 4, next: 1}, {value: 1, next: 8}, {value: 8, next: 4}, {value: 4, next: null}];
+    second = [{value: 2, next: 4}, {value: 4, next: 3}, {value: 3, next: 8}, {value: 8, next: 4}, {value: 4, next: null}];
+    getCommon();
+    function getCommon() {
+        for(var i = 0; i < first.length; i++) {
+            for(var j = 0; j < second.length; j++) {
+                if (first[i].value === second[j].value && first[i].next === second[j].next) {
+                    commonArr.push(first[i]);
+                    console.log(commonArr);
+                }
+            }
+        }
+        common.innerHTML = JSON.stringify(commonArr);
+    }
+</script>
+</body>
+</html>
