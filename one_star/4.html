@@ -1,0 +1,176 @@
+<!--要求：1.删除单链表中的倒数第k个节点 2. 删除双链表中的倒数第k个节点-->
+<!--解题思路：根据单链表和双链表的特点（单链表是单向，从头指向尾。双链表是双向， 既可从头指向尾也可从尾指向头。）来看，双链表删除比较简单，直接从后往前遍历即可。-->
+         <!--主要是单链表，有两种思路。-->
+         <!--1.进行两次遍历，第一次计算链表的长度n，第二次找到n-k的位置，进行删除。缺点：需要遍历两次，实现不优雅。-->
+         <!--2.从头找到第k个节点，两个指针一个a指向第k个节点，一个b指向第一个节点，两节点同时向后移动，直到a指向尾节点，此时b节点指向的则是倒数第k个节点。-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <!--单链表-->
+        <div>
+            <label>输入单链表节点：<input type="text" class="link-list-value"/><span class="confirm">确定</span></label>
+            <div>当前的单链表：<div class="update-link-list"></div></div>
+            <label>输入希望删除的倒数第几个节点：<input type="text" class="k"/><span class="confirm">确定</span></label>
+        </div>
+        <!--双链表-->
+        <div>
+            <label>输入双链表节点：<input type="text" class="link-list-value"/><span class="confirm">确定</span></label>
+            <label>输入希望删除的倒数第几个节点：<input type="text" class="k"/><span class="confirm">确定</span></label>
+            <div>删除后的双链表：<div class="update-link-list"></div></div>
+        </div>
+        <script type="text/javascript">
+            // 单链表
+            var singleLink = document.getElementsByClassName('update-link-list')[0];
+            var singleLinkList = [];
+            var addValueSingle = document.getElementsByClassName('confirm')[0];
+            var deleteValueSingle = document.getElementsByClassName('confirm')[1];
+            // 双链表
+            var doubleLink = document.getElementsByClassName('update-link-list')[1];
+            var doubleLinkList = [];
+            var addValueDouble = document.getElementsByClassName('confirm')[2];
+            var deleteValueDouble = document.getElementsByClassName('confirm')[3];
+
+            // 构成单链表
+            addValueSingle.addEventListener('click', function() {
+                var singleValue = document.getElementsByClassName('link-list-value')[0].value;
+                if (singleLinkList.length === 0) {
+                    let new_spot = {
+                        value: singleValue,
+                        next: null
+                    };
+                    let head = {
+                        value: 'head',
+                        next: new_spot
+                    };
+                    singleLinkList.push(head);
+                    singleLinkList.push(new_spot);
+                } else {
+                    let new_spot = {
+                        value: singleValue,
+                        next: null
+                    };
+                    singleLinkList[singleLinkList.length - 1].next = new_spot;
+                    singleLinkList.push(new_spot);
+                }
+                singleLink.innerHTML = JSON.stringify(singleLinkList);
+            });
+
+            // 删除单链表倒数第k个节点
+            deleteValueSingle.addEventListener('click', function() {
+                var singleK = document.getElementsByClassName('k')[0].value;
+                var i = 0;
+                var cur_value = singleLinkList[0];
+                var first, second;
+                // 倒数第0个
+                if (singleK === '0') {
+                    alert('输入无效');
+                    return
+                }
+                // 倒数第1个
+                if (singleK === '1') {
+                    singleLinkList.pop();
+                    singleLinkList[singleLinkList.length-1].next = null;
+                    singleLink.innerHTML = JSON.stringify(singleLinkList);
+                    return
+                }
+                // 先找到正数第k个 用指针first进行标记 头节点用指针second进行标记 同时向后挪动直到first指向最后一个节点 获取此时second的指向节点 second就是需要删除的
+                while(i < Number(singleK)) {
+                    // singleK大于链表的总长度
+                    if (!cur_value) {
+                        alert('输入无效');
+                        return
+                    }
+                    cur_value = cur_value.next;
+                    i++;
+                }
+                first = cur_value;
+                second = singleLinkList[0];
+                while (first.next) {
+                    first = first.next;
+                    second = second.next;
+                }
+                second.next = second.next.next;
+                let arr = [];
+                let temp = singleLinkList[0];
+                let num = 0;
+                while(temp.next) {
+                    arr.push(temp);
+                    temp = temp.next;
+                    num++;
+                }
+                singleLinkList = arr;
+                singleLink.innerHTML = JSON.stringify(singleLinkList);
+            });
+
+            // 构成双链表
+            addValueDouble.addEventListener('click', function() {
+                var DoubleValue = document.getElementsByClassName('link-list-value')[1].value;
+                if (doubleLinkList.length === 0) {
+                    let head = new_node('head');
+                    doubleLinkList.push(head);
+                }
+                // 插入
+                let last_spot = doubleLinkList[doubleLinkList.length - 1];
+                let new_spot = new_node(DoubleValue);
+                last_spot.next = new_spot;
+                new_spot.pre = last_spot;
+                doubleLinkList.push(new_spot);
+                console.log(doubleLinkList);
+                // doubleLink.innerHTML = doubleLinkList;
+            });
+            function new_node(value) {
+                let node = {
+                    value: value,
+                    pre: null,
+                    next: null
+                };
+                return node;
+            }
+
+            // 删除双链表倒数第k个节点
+            deleteValueDouble.addEventListener('click', function() {
+                console.log(doubleLinkList[doubleLinkList.length - 1]);
+                var doubleK = document.getElementsByClassName('k')[1].value;
+                var i = 1;
+                var cur_value = doubleLinkList[doubleLinkList.length - 1];
+                // 倒数第0个
+                if (doubleK === '0') {
+                    alert('输入无效');
+                    return
+                }
+                // 倒数第1个
+                if (doubleK === '1') {
+                    doubleLinkList.pop();
+                    doubleLinkList[doubleLinkList.length-1].next = null;
+                    return
+                }
+                while(i < Number(doubleK)) {
+                    // singleK大于链表的总长度
+                    if (!cur_value) {
+                        alert('输入无效');
+                        return
+                    }
+                    cur_value = cur_value.pre;
+                    i++;
+                }
+                let pre = cur_value.pre;
+                let after = cur_value.next;
+                pre.next = after;
+                let temp = doubleLinkList.find(item => item.value === 'head');
+                let num = 0;
+                let arr = [];
+                while(temp.next) {
+                    arr.push(temp);
+                    temp = temp.next;
+                    num++;
+                }
+                arr.push(temp);
+                doubleLinkList = arr;
+            });
+        </script>
+    </body>
+</html>
