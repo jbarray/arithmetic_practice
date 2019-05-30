@@ -1,0 +1,100 @@
+<!--5.-->
+<!--要求: 删除链表的中间节点 和 a/b处的节点-->
+<!--思路: 先计算链表的总长度 找出中间节点or找出a/b处的节点 和前一节点 进行删除-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <input id="input" />
+        <div id="add">添加</div>
+        <div class="delete">删除中间节点</div>
+        a:<input id="inputA" />
+        b:<input id="inputB" />
+        <div class="delete">删除a/b</div>
+        <div class="showLink"></div>
+        <script type="text/javascript">
+            var addButton = document.getElementById('add');
+            var deleteMiddleButton = document.getElementsByClassName('delete')[0];
+            var deleteButton = document.getElementsByClassName('delete')[1];
+            var singleLinked = document.getElementsByClassName('showLink')[0];
+            var singleLinkedList = [];
+            // 构成单链表
+            addButton.addEventListener('click', function() {
+                var inputValue = document.getElementById('input').value;
+                if (singleLinkedList.length === 0) {
+                    let head = new_node('head');
+                    singleLinkedList.push(head);
+                }
+                let new_spot = new_node(inputValue);
+                singleLinkedList[singleLinkedList.length - 1].next = new_spot;
+                singleLinkedList.push(new_spot);
+                singleLinked.innerHTML = JSON.stringify(singleLinkedList);
+            });
+            function new_node (e) {
+                return {
+                    value: e,
+                    next: null
+                }
+            }
+
+            // 删除中间节点
+            deleteMiddleButton.addEventListener('click', function() {
+                console.log('0');
+                let total_num = 0;
+                let cur_spot = singleLinkedList[0];
+                while(cur_spot.next) {
+                    total_num++;
+                }
+                let middle = Math.ceil(total_num / 2);
+                let i = 0;
+                while(i < middle) {
+                    i++;
+                }
+                // 找到middle的前一项
+                let middleSpot = singleLinkedList[i];
+                singleLinkedList[i].next = middleSpot.next;
+                // 更新singleLinkedList
+                let arr = [];
+                cur_spot = singleLinkedList[0];
+                while(cur_spot.next) {
+                    arr.push(cur_spot);
+                }
+                arr.push(cur_spot);
+                singleLinkedList = arr;
+                console.log(arr);
+                singleLinked.innerHTML = JSON.stringify(singleLinkedList);
+            });
+            // 删除a/b节点
+            deleteButton.addEventListener('click', function() {
+                console.log('1');
+                var inputValueA = document.getElementById('inputA').value;
+                var inputValueB = document.getElementById('inputB').value;
+                let total_num = 0;
+                let cur_spot = singleLinkedList[0];
+                while(cur_spot.next) {
+                    total_num++;
+                }
+                let delete_num = Math.ceil(inputValueA / inputValueB);
+                let i = 0;
+                while(i < delete_num) {
+                    i++;
+                }
+                // 找到要删除的前一项
+                let deleteSpot = singleLinkedList[i];
+                singleLinkedList[i].next = deleteSpot.next;
+                // 更新singleLinkedList
+                let arr = [];
+                cur_spot = singleLinkedList[0];
+                while(cur_spot.next) {
+                    arr.push(cur_spot);
+                }
+                arr.push(cur_spot);
+                singleLinkedList = arr;
+            });
+
+	</script>
+    </body>
+</html>
