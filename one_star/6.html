@@ -1,0 +1,77 @@
+<!--要求：反转单向链表和双向链表-->
+<!--思路：反转单向链表：借助变量，单次进行更换next指向；反转双向链表也是如此-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>6</title>
+    </head>
+    <body>
+        <script>
+            var singleList = [
+                {value: 'head', next: {value: '1', next: {value: '2', next: {value: '3', next: {value: '4', next: null}}}}},
+                {value: '1', next: {value: '2', next: {value: '3', next: {value: '4', next: null}}}},
+                {value: '2', next: {value: '3', next: {value: '4', next: null}}},
+                {value: '3', next: {value: '4', next: null}},
+                {value: '4', next: null}
+            ];
+
+            reverseSingleList();
+            // reverseDoubleList();
+
+            function reverseSingleList() {
+                var pre = singleList[0];
+                var cur_node = singleList[1];
+                var next = {};
+                var i = 1;
+                while(next) {
+                    next = singleList[i+1];
+                    if (pre.value === 'head') {
+                        cur_node.next = null;
+                    } else {
+                        cur_node.next = pre;
+                    }
+                    pre = cur_node;
+                    if (next) {
+                        cur_node = next;
+                    }
+                    i++;
+                }
+                const head = {
+                    value: 'head',
+                    next: null
+                };
+                head.next = cur_node;
+                console.log(head);
+            }
+
+            // function reverseDoubleList() {
+            //     var pre = doubleList[0];
+            //     var cur_node = doubleList[1];
+            //     var next = {};
+            //     var i = 1;
+            //     while(next) {
+            //         next = doubleList[i+1];
+            //         if (pre.value === 'head') {
+            //             cur_node.next = null;
+            //             pre.pre = cur_node;
+            //         } else {
+            //             cur_node.next = pre;
+            //             pre.pre = cur_node;
+            //         }
+            //         pre = cur_node;
+            //         if (next) {
+            //             cur_node = next;
+            //         }
+            //         i++;
+            //     }
+            //     const head = {
+            //         value: 'head',
+            //         next: null
+            //     };
+            //     head.next = cur_node;
+            //     console.log(head);
+            // }
+        </script>
+    </body>
+</html>
