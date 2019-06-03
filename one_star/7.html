@@ -1,0 +1,106 @@
+<!--要求：两个单链表的各项相加-->
+<!--思路：分别将两个链表的值压入两个栈中，计算相加后，将结果压入arr栈中，再进行链表的组装-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>7</title>
+</head>
+<body>
+    <script type="text/javascript">
+			// 两个单链表的数值分别入栈、
+			var linkList1 = [
+            {value: 'head', next: {value: 9, next: {value: 7, next: null}}},
+			{value: 1, next: {value: 2, next: {value: 3, next: null}}},
+			{value: 9, next: {value: 7, next: null}},
+			{value: 7, next: null}
+			];
+			var linkList2 = [
+            {value: 'head', next: {value: 6, next: null}},
+            {value: 4, next: {value: 5, next: {value: 6, next: null}}},
+			{value: 5, next: {value: 6, next: null}},
+			{value: 6, next: null}
+			];
+			var arr1 = [];
+			var arr2 = [];
+			var arr = [];
+			var isThanTen = 0;
+			plusLinkList();
+			function plusLinkList() {
+				let cur_node1 = linkList1[1];
+				while(cur_node1.next) {
+					arr1.push(cur_node1.value);
+                    cur_node1 = cur_node1.next;
+				}
+				arr1.push(cur_node1.value);
+
+				let cur_node2 = linkList2[1];
+				while(cur_node2.next) {
+					arr2.push(cur_node2.value);
+                    cur_node2 = cur_node2.next;
+				}
+				arr2.push(cur_node2.value);
+				// 末尾进行加 入新栈
+				while(arr1.length > 0 || arr2.length > 0) {
+
+					if (arr1.length === 0 && arr2.length > 0) {
+                        let plus = arr2[arr2.length-1] + isThanTen;
+                        if (plus > 9) {
+                            plus = plus - 10;
+                            isThanTen = 1;
+                        } else {
+                            isThanTen = 0;
+                        }
+                        arr.push(plus);
+                        arr2.pop();
+                    } else if (arr1.length > 0 && arr2.length === 0) {
+					    let plus = arr1[arr1.length - 1] + isThanTen;
+                        if (plus > 9) {
+                            plus = plus - 10;
+                            isThanTen = 1;
+                        } else {
+                            isThanTen = 0;
+                        }
+                        arr.push(plus);
+                        arr1.pop();
+					} else {
+						let plus = arr1[arr1.length-1] + arr2[arr2.length-1] + isThanTen;
+						// 找变量进行检测是否10以上
+						if (plus > 9) {
+							plus = plus - 10;
+                            isThanTen = 1;
+						} else {
+                            isThanTen = 0;
+                        }
+						arr.push(plus);
+						arr1.pop();
+						arr2.pop();
+					}
+				}
+				if (isThanTen === 1) {
+				    arr.push(1);
+                }
+                let new_arr = [
+                    {
+                        value: 'head',
+                        next: null
+                    }
+                ];
+				cur_node1 = {};
+				while(arr.length > 0) {
+				    cur_node1 = arr[arr.length - 1]
+                    new_arr[new_arr.length - 1].next = {
+                        value: cur_node1,
+                        next: null
+                    }
+                    new_arr.push({
+                        value: cur_node1,
+                        next: null
+                    });
+                    arr.pop();
+                }
+                console.log(new_arr);
+			}
+		</script>
+</body>
+</html>
