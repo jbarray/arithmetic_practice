@@ -1,0 +1,39 @@
+<!--要求： 将一个无序链表中的重复项进行删除-->
+<!--思路： 新建一个栈，从链表的头部开始入栈，入栈时进行判断，栈内已经存在的就不入栈。-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>8</title>
+</head>
+<body>
+<script type="text/javascript">
+    // 新建一个栈 将数组从头开始压入 每压入一个 就遍历一次栈的数据 若重复则不入栈 不重复则入栈
+    var linkList = [
+        {value: 'head', next: {value: 1, next: {value: 1, next: {value: 3, next: null}}}},
+        {value: 1, next: {value: 1, next: {value: 3, next: null}}},
+        {value: 1, next: {value: 3, next: null}},
+        {value: 3, next: null}
+    ];
+    var arr = [];
+    deleteRepeat();
+    function deleteRepeat() {
+        var cur_node = {};
+        var i = 0;
+        while(i < linkList.length) {
+            cur_node = linkList[i];
+            // 遍历栈的数据 查看是否有重复
+            let index = arr.findIndex(item => {
+                return item.value === cur_node.value
+            })
+            // 无重复
+            if (index === -1) {
+                arr.push(cur_node);
+            }
+            i++;
+        }
+        console.log(arr);
+    }
+</script>
+</body>
+</html>
